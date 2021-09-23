@@ -7,7 +7,7 @@ info:
   title: Swagger Petstore
   termsOfService: http://swagger.io/terms/
   contact:
-    email: apiteam@swagger.io
+    email: apiteam@swagger.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
