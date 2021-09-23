@@ -26,7 +26,7 @@ jobs:
         id: checkout-master
         uses: actions/checkout@v2
         with:
-          repository: kalyanchakri02/test
+          repository: kinturi/api-spec-versioning
           token: ${{ secrets.TOKEN }}
       - name: install-python
         id: install-python
