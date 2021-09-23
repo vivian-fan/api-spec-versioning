@@ -99,7 +99,8 @@ release_branche = release_branches[len(release_branches)-1]
 if release_branches is not None:
     release_branches.sort()
 
-release_branche = release_branche[x.find('production_release'):len(release_branche)]
+
+release_branche = release_branche[release_branche.find('production_release'):len(release_branche)]
 
 clone_repo_release = git.Repo.clone_from(repo_url,release_path,branch=release_branche)
 
