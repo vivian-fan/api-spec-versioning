@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: Manual workflow
+name: spec-versioning
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -8,8 +8,10 @@ on:
   pull_request:
     branches:
       - master
-    types:
-      - closed
+      - develop
+
+concurrency:
+  group: {{GITHUB_REPOSITORY}}
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "greet"
@@ -36,12 +38,4 @@ jobs:
         run: pip install GitPython
       - name: run-python-script
         id: run-python-script
-        run: |
-         output=$(python bump-version.py)
-         output="${output//'%'/'%25'}"
-         output="${output//$'\n'/'%0A'}"
-         output="${output//$'\r'/'%0D'}"
-         echo "::set-output name=log::$output"
-      - name: print-log
-        id: print-logs
-        run: echo "${{steps.run-python-script.outputs.log}}"
+        run: python bump-version.py
