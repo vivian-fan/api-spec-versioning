@@ -9,6 +9,8 @@ on:
     branches:
       - master
       - develop
+    types:
+      -closed
 
 concurrency:
   group: spec-versioning
