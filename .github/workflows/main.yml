@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: kalyanchakri02/test
-          token: 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 
+          token: ${{ secrets.TOKEN }}
       - name: install-python
         id: install-python
         uses: actions/setup-python@v2
@@ -38,4 +38,4 @@ jobs:
         run: pip install GitPython
       - name: run-python-script
         id: run-python-script
-        run: python bump-version.py
+        run: python bump-version.py minor ${{ secrets.TOKEN }}

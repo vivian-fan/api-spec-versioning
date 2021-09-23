@@ -7,15 +7,26 @@ import sys
 
 import os
 
-import  re
-
 import shutil
 
 import yaml
 
+
+def convertVersionToInt(data):
+    result=[]
+    for x in data.split('.'):
+        result.append(int(x))
+    return result
+
+def convertArrayToVersion(data):
+    version=''
+    for x in data:
+        version= version+'.'+str(x)
+    return version[1:len(version)]
+
 def bump_version(data, change):
     version = data['info']['version']
-    next_version = str(version).split('\\.')
+    next_version = str(version).split('.')
     i = 0
     for x in next_version:
         next_version[i] = int(x)
@@ -36,18 +47,16 @@ def bump_version(data, change):
         return final_version[1:len(final_version)]
 
 def calculate_final_version(master_version, calculated_version):
-    master = str(master_version).split("\\.")
-    calculated = str(calculated_version).split("\\.")
+    master = convertVersionToInt(master_version)
+    calculated = convertVersionToInt(calculated_version)
     final = master
     i = 0
     while i < len(master):
         if calculated[i] > master[i]:
             final = calculated
+            return convertArrayToVersion(final)
         i = i+1
-    final_version = ''
-    for x in final:
-        final_version = final_version+'.'+x
-    return final_version[1:len(final_version)]
+    return convertArrayToVersion(final)
 
 
 change = sys.argv[1]
@@ -80,13 +89,19 @@ clone_repo_master = git.Repo.clone_from(repo_url,master_path,branch='master')
 release_branches = []
 
 for branch in clone_repo_master.refs:
-    if re.search('production-release',branch.__str__()) is not None:
+    print(branch.__str__())
+    x = branch.__str__()
+    if x.find('production_release') > -1:
         release_branches.append(branch.__str__())
+
+release_branche = release_branches[len(release_branches)-1]
+
+release_branche = release_branche[x.find('production_release'):len(release_branche)]
 
 if release_branches is not None:
     release_branches.sort()
 
-clone_repo_release = git.Repo.clone_from(repo_url,release_path,branch=release_branches[len(release_branches)-1])
+clone_repo_release = git.Repo.clone_from(repo_url,release_path,branch=release_branche)
 
 master_branch_spec = {}
 
@@ -101,7 +116,9 @@ with open(release_path+'/'+spec_file_name, 'r') as release_branch_spec:
 
 calculated_version = bump_version(release_branch_spec,change)
 
-final_version = calculate_final_version(master_branch_spec['info']['version'],release_branch_spec['info']['version'])
+print('calulates version '+calculated_version)
+
+final_version = calculate_final_version(master_branch_spec['info']['version'],calculated_version)
 
 shutil.rmtree(release_path)
 
@@ -112,6 +129,10 @@ if master_branch_spec['info']['version'] != final_version:
     master_branch_spec['info']['version'] = final_version
     with open(spec_file_name, "w+") as f:
         f.write(yaml.safe_dump(master_branch_spec,default_flow_style=False, sort_keys=False))
+        repo = git.Repo('.')
+        repo.index.add(spec_file_name)
+        repo.index.commit('updated spec vesion')
+        repo.remote('origin').push()
 
 
 
