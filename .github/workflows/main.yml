@@ -1,0 +1,47 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  bump:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: checkout-repo
+        id: checkout-master
+        uses: actions/checkout@v2
+        with:
+          repository: kalyanchakri02/test
+          token: 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 
+      - name: install-python
+        id: install-python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: install-py-lib
+        id: install-py-lib  
+        run: pip install GitPython
+      - name: run-python-script
+        id: run-python-script
+        run: |
+         output=$(python bump-version.py)
+         output="${output//'%'/'%25'}"
+         output="${output//$'\n'/'%0A'}"
+         output="${output//$'\r'/'%0D'}"
+         echo "::set-output name=log::$output"
+      - name: print-log
+        id: print-logs
+        run: echo "${{steps.run-python-script.outputs.log}}"
