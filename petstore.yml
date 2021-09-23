@@ -18,7 +18,7 @@ tags:
   description: Everything about your Pets
   externalDocs:
     description: Find out more
-    url: http://swagger.io
+    url: http://swagger.com
 - name: store
   description: Access to Petstore orders
 - name: user
