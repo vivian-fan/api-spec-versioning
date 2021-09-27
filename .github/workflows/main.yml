@@ -40,4 +40,4 @@ jobs:
           ./.github/intall-py-dependecies.sh
       - name: run-python-script
         id: run-python-script
-        run: python bump-version.py minor ${{ secrets.TOKEN }}
+        run: python bump-version.py ${{ secrets.TOKEN }}

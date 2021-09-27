@@ -1,6 +1,9 @@
 #!/bin/python
 
 
+#!/bin/python
+
+
 import git
 
 import sys
@@ -59,10 +62,21 @@ def calculate_final_version(master_version, calculated_version):
     return convertArrayToVersion(final)
 
 
-change = sys.argv[1]
+change = ''
 
-access_token = sys.argv[2]
+access_token = sys.argv[1]
 
+developer_intent_file_name = './developer-intent.txt'
+
+with open(developer_intent_file_name,'r') as developer_intent:
+    lines = developer_intent.read().splitlines()
+    for line in lines:
+        line = line.strip()
+        if line.find('bump') >= 0:
+            change = line.split('=')[1].strip().lower()
+
+if change != 'minor' and change != 'major':
+    sys.exit('developer intention is not conveyed correctly !!!!')
 
 
 spec_file_name = 'petstore.yml'
@@ -127,6 +141,7 @@ shutil.rmtree(master_path)
 
 if master_branch_spec['info']['version'] != final_version:
     os.remove(spec_file_name)
+    os.remove(developer_intent_file_name)
     master_branch_spec['info']['version'] = final_version
     with open(spec_file_name, "w+") as f:
         f.write(yaml.safe_dump(master_branch_spec,default_flow_style=False, sort_keys=False))
@@ -134,6 +149,24 @@ if master_branch_spec['info']['version'] != final_version:
         repo.index.add(spec_file_name)
         repo.index.commit('updated spec vesion')
         repo.remote('origin').push()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
