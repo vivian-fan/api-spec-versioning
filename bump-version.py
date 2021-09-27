@@ -55,10 +55,13 @@ def calculate_final_version(master_version, calculated_version):
     final = master
     i = 0
     while i < len(master):
-        if calculated[i] > master[i]:
+        if calculated[i] < master[i]:
+            break
+        elif calculated[i] > master[i]:
             final = calculated
-            return convertArrayToVersion(final)
-        i = i+1
+            break
+        else:
+            i = i+1
     return convertArrayToVersion(final)
 
 
