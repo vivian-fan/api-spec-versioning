@@ -1,6 +1,9 @@
 #!/bin/python
 
 
+#!/bin/python
+
+
 import git
 
 import sys
@@ -134,6 +137,24 @@ if master_branch_spec['info']['version'] != final_version:
         repo.index.add(spec_file_name)
         repo.index.commit('updated spec vesion')
         repo.remote('origin').push()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
