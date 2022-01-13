@@ -67,7 +67,7 @@ def calculate_final_version(master_version, calculated_version):
 
 change = ''
 
-access_token = sys.argv[1]
+access_token = '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'
 
 developer_intent_file_name = './developer-intent.txt'
 
