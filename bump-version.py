@@ -99,7 +99,7 @@ os.mkdir(release_path)
 
 os.mkdir(master_path)
 
-repo_url = 'https://'+access_token+':x-oauth-basic@github.com/kinturi/api-spec-versioning.git'
+repo_url = 'https://'+access_token+':x-oauth-basic@github.com/vivian-fan/api-spec-versioning.git'
 
 clone_repo_master = git.Repo.clone_from(repo_url,master_path,branch='master')
 
