@@ -67,7 +67,7 @@ def calculate_final_version(master_version, calculated_version):
 
 change = ''
 
-access_token = sys.argv[1]
+access_token = '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'
 
 developer_intent_file_name = './developer-intent.txt'
 
@@ -99,7 +99,7 @@ os.mkdir(release_path)
 
 os.mkdir(master_path)
 
-repo_url = 'https://'+access_token+':x-oauth-basic@github.com/kinturi/api-spec-versioning.git'
+repo_url = 'https://'+access_token+':x-oauth-basic@github.com/vivian-fan/api-spec-versioning.git'
 
 clone_repo_master = git.Repo.clone_from(repo_url,master_path,branch='master')
 
