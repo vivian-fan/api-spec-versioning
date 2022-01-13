@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: vivian-fan/api-spec-versioning
-          token: ${{ secrets.TOKEN }}
+          token: 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
       - name: install-python
         id: install-python
         uses: actions/setup-python@v2
@@ -40,4 +40,4 @@ jobs:
           ./.github/intall-py-dependecies.sh
       - name: run-python-script
         id: run-python-script
-        run: python bump-version.py ${{ secrets.TOKEN }}
+        run: python bump-version.py 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
